@@ -1,0 +1,1 @@
+1-> https://www.google.com/settings/security/lesssecureapps Please make sure you allow access for this app to send emails from the logged in Account.

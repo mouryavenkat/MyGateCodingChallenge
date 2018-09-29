@@ -1,0 +1,29 @@
+/*If screen size is less than 600px make screen width to 100 px*/
+.sideBarWidth{
+    min-width: 272px;
+    position: fixed;
+    height: 100%;
+    background-color: #dfe6eb;
+    top: 3.2rem;
+    left: 0;
+    padding: 20px
+}
+@media only screen and (max-width: 500px) {
+    .sideBarWidth{
+        min-width: 100px;
+        padding: 10px
+    }
+}
+@media only screen and (max-width: 400px) {
+    .sideBarWidth{
+        max-width: 80px;
+        padding: 8px
+        
+    }
+}
+.dropdown-toggle::after{
+    border: 0
+}
+.menuItem{
+    right: 2%;
+}
