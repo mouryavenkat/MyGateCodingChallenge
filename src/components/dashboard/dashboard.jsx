@@ -39,6 +39,9 @@ class DashboardComponent extends React.Component {
             console.log('Redirecting to login page');
             this.setState({ redirectToLoginPage: true });
           }
+        }).catch((ex) => {
+          console.log('Redirecting to login page');
+          this.setState({ redirectToLoginPage: true });
         })
     }
   }

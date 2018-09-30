@@ -1,6 +1,6 @@
-const createGroupEntity = require('../../entities/createGroupEvent');
-const logger = require('../../../config/logger').getLogger();
-const createOperation = require('../CrudOperations/create');
+const createGroupEntity = require('../../../entities/createGroupEvent');
+const logger = require('../../../../config/logger').getLogger();
+const createOperation = require('../../CrudOperations/create');
 
 const createGroup = async (req, res) => {
     logger.info(`------------Creating group-------------`);

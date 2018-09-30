@@ -1,6 +1,6 @@
-const deleteOperation = require('../CrudOperations/delete');
-const logger = require('../../../config/logger').getLogger();
-const createGroupEntity = require('../../entities/createGroupEvent');
+const deleteOperation = require('../../CrudOperations/delete');
+const logger = require('../../../../config/logger').getLogger();
+const createGroupEntity = require('../../../entities/createGroupEvent');
 const DeleteGroupDetails = async (req, res) => {
     try {
         logger.info(`Delete Operation being executed`);

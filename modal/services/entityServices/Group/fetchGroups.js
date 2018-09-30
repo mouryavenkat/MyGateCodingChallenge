@@ -1,6 +1,6 @@
-const readOperation = require('../CrudOperations/read');
-const logger = require('../../../config/logger').getLogger();
-const createGroupEntity = require('../../entities/createGroupEvent');
+const readOperation = require('../../CrudOperations/read');
+const logger = require('../../../../config/logger').getLogger();
+const createGroupEntity = require('../../../entities/createGroupEvent');
 const fetchGroupDetailsInternal = async (admin) => {
     try {
         logger.info(`Read Operation being executed`);

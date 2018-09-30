@@ -19,7 +19,7 @@ const groupSchema = new Schema({
     description: { type: String, required: true, strict: true },
     admin: { type: String, required: true, strict: true },
     totalMonths: { type: Number, required: true, strict: true },
-    bidDetails: { type: Mixed, required: false }
+    bidDetails: { type: Schema.Types.Mixed, required: false }
 })
 const createModelForGroup = () => {
     const group = mongoose.model('groups', groupSchema);

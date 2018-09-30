@@ -25,6 +25,7 @@ class UpdateBid extends React.Component {
             groupSelected: '',
             monthSelected: '',
             usersUnderGroup: [],
+            biddedUser: '',
             bidAmount: 0,
 
         }
@@ -90,6 +91,28 @@ class UpdateBid extends React.Component {
             this.setState({ isLoading: false })
         }
     }
+    updateGroupWithBidDetails = async () => {
+        const group = this.state.groupSelected;
+        const month = this.state.monthSelected;
+        const bidAmount = this.state.bidAmount;
+        const biddedUser = this.state.biddedUser;
+        const bidDate = Date(Date.now());
+        const bidDetailsToBeUpdated={month,bidAmount,biddedUser,bidDate};
+
+        console.log(group, month, bidAmount, biddedUser,bidDate)
+        fetch(`http://localhost:8080/updateGroup/?admin=${sessionStorage.getItem('user')}&groupName=${group}`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: bidDetailsToBeUpdated,
+            credentials: 'include' // include sends cookie information from client to server.
+        }).then(response => response.json())
+            .then(response => {
+                console.log(`Users under group and admin ${JSON.stringify(response)}`);
+                
+            }).catch((ex) => {
+                console.log(ex);
+            })
+    }
     async componentDidMount() {
         await this.fetchGroupDetails();
     }
@@ -132,7 +155,8 @@ class UpdateBid extends React.Component {
                         <TextInput
                             placeholder='Enter Amount bidded for selected month'
                             onChange={(evt) => { this.setState({ bidAmount: evt.target.value }) }}
-                            labelText='Bid Amount' />
+                            labelText='Bid Amount'
+                            id='bidAmount' />
                     </div>
                     <br />
                     <div className='row' >
@@ -141,11 +165,12 @@ class UpdateBid extends React.Component {
                             items={this.state.usersUnderGroup}
                             itemToString={(item) => { if (item) return item.id }}
                             placeholder="Select Month To Update Bid"
+                            onChange={(evt) => this.setState({ biddedUser: !_.isNull(evt.selectedItem) ? evt.selectedItem.text : '' })}
                         />
                     </div>
                     <br />
                     <div >
-                        <center><Button>Update Bid</Button></center>
+                        <center><Button onClick={(evt) => { this.updateGroupWithBidDetails() }}>Update Bid</Button></center>
                     </div>
                 </div>
 
