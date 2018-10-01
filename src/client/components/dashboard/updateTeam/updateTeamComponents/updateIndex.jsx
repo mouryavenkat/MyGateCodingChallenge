@@ -1,9 +1,6 @@
 import React from 'react';
 import { ContentSwitcher, Switch } from 'carbon-components-react'
 class UpdateTeamSubComponent extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <div className='container'>

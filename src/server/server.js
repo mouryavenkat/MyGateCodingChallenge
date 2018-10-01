@@ -1,13 +1,12 @@
 'use strict'
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoConnection = require('./modal/createConnection');
+const mongoConnection = require('../model/createConnection');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
-const session = require('express-session');
 const app = express();
 const CONTENT_SERVER_PORT = process.env.ADAPTER_TEMPLATE_ENGINE_PORT ? process.env.ADAPTER_TEMPLATE_ENGINE_PORT : 8080
-require('./google');
+require('./authStrategies/google');
 const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:3000',

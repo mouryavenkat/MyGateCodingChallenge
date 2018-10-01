@@ -46,7 +46,7 @@ class RegisterComponent extends React.Component {
                 labelText="Add Government Id"
                 name="Add Proof"
                 multiple
-                role=""
+                
                 tabIndex={-1}
                 className='alignContentToButton'
                 style={{ width: '100%' }}

@@ -1,10 +1,10 @@
 
 // Starts executing the template received from request body
 const sendMail = require('../lib/sendMail');
-const createGroup = require('../modal/services/entityServices/Group/createGroup');
-const getGroups = require('../modal/services/entityServices/Group/fetchGroups');
-const deleteGroup = require('../modal/services/entityServices/Group/deleteGroup');
-const updateGroup = require('../modal/services/entityServices/Group/updateGroup');
+const createGroup = require('../../model/services/entityServices/Group/createGroup');
+const getGroups = require('../../model/services/entityServices/Group/fetchGroups');
+const deleteGroup = require('../../model/services/entityServices/Group/deleteGroup');
+const updateGroup = require('../../model/services/entityServices/Group/updateGroup');
 module.exports = (app) => {
     app.route('/healthCheck')
         .get((req, res) => {

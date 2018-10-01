@@ -1,7 +1,6 @@
 import React from 'react';
 import { TextInput, FileUploaderButton, FormGroup, RadioButton, RadioButtonGroup, Button, Loading } from 'carbon-components-react'
 import './createUser.css'
-const axios = require('axios');
 class CreateUser extends React.Component {
   constructor(props) {
     super(props);
@@ -103,7 +102,6 @@ class CreateUser extends React.Component {
                   labelText="Add Government Id"
                   name="Add Proof"
                   multiple
-                  role=""
                   tabIndex={-1}
                   onChange={(evt) => { this.setState({ proof: evt.target.value }) }}
                   style={{ width: '100%',overflow:'hidden' }}

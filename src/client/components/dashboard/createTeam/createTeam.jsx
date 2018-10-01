@@ -154,7 +154,6 @@ class CreateTeam extends React.Component {
                   label="Minimum Count"
                   min={0}
                   max={100}
-                  value={1}
                   step={1}
                   invalidText="Number is not valid"
                   className='noflex'
@@ -167,8 +166,7 @@ class CreateTeam extends React.Component {
                   id="minCount"
                   label="Maximum Count"
                   min={2}
-                  max={100}
-                  value={1}
+                  max={100}            
                   step={1}
                   invalidText="Number is not valid"
                   className='noflex'

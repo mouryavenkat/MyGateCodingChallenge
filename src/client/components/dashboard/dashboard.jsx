@@ -6,7 +6,6 @@ import DeleteUser from './deleteUser/deleteUser'
 import UpdateTeam from './updateTeam/updateTeam';
 import UpdateUser from './updateUser/updateUser';
 import UpdateBid from './updateBid/updateBid'
-const _ = require('lodash');
 class DashboardComponent extends React.Component {
   constructor(props) {
     super(props);

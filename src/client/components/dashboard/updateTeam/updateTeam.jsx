@@ -19,7 +19,9 @@ class DisplayAllTeams extends React.Component {
                 <center>
                   <img
                     src={require('../../../resources/images/cardLogo.svg')}
-                    style={{ verticalAlign: 'baseline', marginTop: '0.7rem', height: '2.6rem' }}>
+                    style={{ verticalAlign: 'baseline', marginTop: '0.7rem', height: '2.6rem' }}
+                    
+                    >
                   </img>
                 </center>
               </div>

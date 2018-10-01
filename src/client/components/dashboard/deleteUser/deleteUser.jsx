@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loading, MultiSelect } from 'carbon-components-react';
+import { Loading } from 'carbon-components-react';
 import '../../../resources/carbon-components.css'
 import './deleteUser.css';
 const _ = require('lodash');

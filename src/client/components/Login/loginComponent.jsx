@@ -1,13 +1,8 @@
 import React from 'react';
 import { TextInput, Breadcrumb, BreadcrumbItem, Button, Link } from 'carbon-components-react'
-
 import './loginComponent.css';
 import RegisterComponent from '../Register/RegisterComponent';
-const axios = require('axios');
 class LoginDetails extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <div style={{ height: '100%', position: 'relative', overflow: 'hidden' }}>

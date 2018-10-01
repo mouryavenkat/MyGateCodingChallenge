@@ -1,8 +1,8 @@
 
 // Starts executing the template received from request body
 
-const createAdmin = require('../modal/services/entityServices/admin/createAdmin');
-const fetchAdmin = require('../modal/services/entityServices/admin/fetchAdmin');
+const createAdmin = require('../../model/services/entityServices/admin/createAdmin');
+const fetchAdmin = require('../../model/services/entityServices/admin/fetchAdmin');
 module.exports = (app) => {
     // Group related api's
     app.route('/createAdmin')

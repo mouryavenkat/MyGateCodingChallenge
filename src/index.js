@@ -5,9 +5,10 @@ import './resources/carbon-components.css'
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
-import LoginComponent from './components/Login/loginComponent';
-import CreateTeam from './components/dashboard/createTeam/createTeam';
-import DashboardComponent from './components/dashboard/dashboard';
+import LoginComponent from './client/components/Login/loginComponent';
+import CreateTeam from './client/components/dashboard/createTeam/createTeam';
+import DashboardComponent from './client/components/dashboard/dashboard';
+
 
 class App extends React.Component {
   render() {
@@ -21,7 +22,7 @@ class App extends React.Component {
             return (
               <div>
                 <DashboardComponent />
-                <CreateTeam ref='createTeam'/>
+                <CreateTeam ref='createTeam' />
               </div>
             )
           }} />
