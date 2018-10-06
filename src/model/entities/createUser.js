@@ -6,7 +6,6 @@ const UserSchema = new Schema({
     emailId: { type: String, required: true, strict: true },
     gender: { type: String, required: true, strict: true },
     managedBy: { type: String, required: true, strict: true },
-    associatedGroups: { type: Array, required: true, strict: true },
     governmentProof: { type: String } // Later need to be modified as string.
 })
 const createModelForUser = () => {

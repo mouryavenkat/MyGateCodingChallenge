@@ -38,6 +38,8 @@ app.use(function (req, res, next) {
 require('./controllers/api-controller')(app);
 require('./controllers/user-controller')(app);
 require('./controllers/admin-controller')(app);
+require('./controllers/commission-controller')(app);
+require('./controllers/payment-controller')(app)
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieSession({
@@ -50,9 +52,9 @@ app.get('/loginMe', passport.authenticate('google', {
     scope: ['profile', 'email']
 }))
 app.get('/auth/google/redirect', passport.authenticate('google'), ((req, res) => {
-    
+
     console.log(req.session.passport);
-    req.session.username=req.session.passport.user;
+    req.session.username = req.session.passport.user;
     res.redirect('http://localhost:3000/dashboard');
 }))
 app.get('/fetchUserInfo', (req, res) => {
@@ -62,7 +64,11 @@ app.get('/fetchUserInfo', (req, res) => {
         console.log(req.session.passport.user)
         return res.json({ user: req.session.passport.user });
     }
-    return res.status(200).json({code:500,message:'No user session found'});
+    return res.status(200).json({ code: 500, message: 'No user session found' });
+})
+app.get('/deleteSession', (req, res) => {
+    req.session.passport.user = undefined;
+    res.json({code:200,message:'successful'});
 })
 
 if (CONTENT_SERVER_PORT != undefined) {

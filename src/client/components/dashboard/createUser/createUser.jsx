@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextInput, FileUploaderButton, FormGroup, RadioButton, RadioButtonGroup, Button, Loading } from 'carbon-components-react'
+import Request from '../../../utilities/request';
 import './createUser.css'
 class CreateUser extends React.Component {
   constructor(props) {
@@ -13,13 +14,40 @@ class CreateUser extends React.Component {
       proof: ''
     }
   }
-  createUser = (event) => {
+  timeOutForNotification = (stateName, stateValue, initialState) => {
+    this.props.changeState(stateName, stateValue);
+    setTimeout(() => {
+      this.props.changeState(stateName, initialState);
+    }, 5000)
+  }
+  createUser = async (event) => {
     this.setState({ isLoading: true })
     console.log(this.state.emailId, this.state.customername, this.state.customerMobile, this.state.gender)
+    const userSchema = {
+      name: this.state.customername,
+      mobileNumber: this.state.customerMobile,
+      emailId: this.state.emailId,
+      gender: this.state.gender,
+      managedBy: sessionStorage.getItem('user'),
+      governmentProof: '' // Descrypt image to string. TODO.
+    }
     //Save user details to DB has to be implemented and also notify feature.
-    setTimeout(() => {
-      this.setState({ isLoading: false })
-    }, 3000)
+    try {
+      await Request('http://localhost:8080/createUser', {
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userSchema),
+        
+        method: 'POST'
+      })
+      this.setState({ isLoading: false });
+      this.timeOutForNotification('successMessage', 'Added user under Admin Successfully', '')
+    }
+    catch (ex) {
+      console.log(ex.message);
+      this.setState({ isLoading: false });
+      this.timeOutForNotification('errorMessage', ex.message, '')
+    }
   }
   render() {
     return (
@@ -76,7 +104,7 @@ class CreateUser extends React.Component {
                       value="Male"
                       id="radio-1"
                       disabled={false}
-                      
+
                       labelText="Male"
                     />
                     <RadioButton
@@ -95,7 +123,7 @@ class CreateUser extends React.Component {
           <div style={{ marginLeft: '25%', marginRight: '25%' }}>
             <div className='row'>
               <div className='col-lg-6' style={{ paddingLeft: 0, verticalAlign: 'baseline', alignContent: 'center' }}>
-                <label for='proofUploader' className='bx--label alignLabelToProof'>Provide Any Government Id<span style={{ color: 'red' }}> *</span></label>
+                <label htmlFor='proofUploader' className='bx--label alignLabelToProof'>Provide Any Government Id<span style={{ color: 'red' }}> *</span></label>
               </div>
               <div className='col-lg-6' style={{ paddingLeft: 0, paddingRight: 0, width: '100%' }}>
                 <FileUploaderButton
@@ -104,7 +132,7 @@ class CreateUser extends React.Component {
                   multiple
                   tabIndex={-1}
                   onChange={(evt) => { this.setState({ proof: evt.target.value }) }}
-                  style={{ width: '100%',overflow:'hidden' }}
+                  style={{ width: '100%', overflow: 'hidden' }}
                 />
               </div>
             </div>

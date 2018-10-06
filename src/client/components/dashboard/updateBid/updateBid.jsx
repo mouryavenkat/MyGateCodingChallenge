@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loading, ComboBox, TextInput, Button } from 'carbon-components-react';
+import Request from '../../../utilities/request';
 const _ = require('lodash');
 const monthMap = {
     1: 'January',
@@ -13,7 +14,7 @@ const monthMap = {
     9: 'September',
     10: 'October',
     11: 'November',
-    12: 'December'
+    0: 'December'
 }
 class UpdateBid extends React.Component {
     constructor(props) {
@@ -30,24 +31,20 @@ class UpdateBid extends React.Component {
 
         }
     }
-
     fetchGroupDetails = async () => {
         this.setState({ isLoading: true });
-        fetch(`http://localhost:8080/fetchGroups/?admin=${sessionStorage.getItem('user')}`, {
-            credentials: 'include' // include sends cookie information from client to server.
-        }).then(response => response.json())
-            .then(response => {
-                console.log(response);
-                if (_.isArray(response)) {
-                    this.setState({
-                        groupDetails: response
-                    })
-                }
-                this.setState({ isLoading: false })
-            }).catch((ex) => {
-                console.log(ex);
-                this.setState({ isLoading: false })
-            })
+        try {
+            const response = await Request(`http://localhost:8080/fetchGroups/?admin=${sessionStorage.getItem('user')}`, { credentials: 'include' })
+            if (_.isArray(response)) {
+                this.setState({
+                    groupDetails: response
+                })
+            }
+            this.setState({ isLoading: false })
+        }
+        catch (ex) {
+            this.setState({ isLoading: false })
+        }
     }
     updateMonthDetails = (selectedItem) => {
         if (!_.isNull(selectedItem)) {
@@ -64,14 +61,14 @@ class UpdateBid extends React.Component {
     }
     updateUserDetailsUnderGroup = async (selectedItem) => {
         if (!_.isNull(selectedItem)) {
-            fetch(`http://localhost:8080/fetchUsers/?admin=${sessionStorage.getItem('user')}&groupNames=${selectedItem.text}`, {
+            fetch(`http://localhost:8080/fetchUsersUnderGroup/?admin=${sessionStorage.getItem('user')}&groupName=${selectedItem.text}`, {
                 credentials: 'include' // include sends cookie information from client to server.
             }).then(response => response.json())
                 .then(response => {
                     console.log(`Users under group and admin ${JSON.stringify(response)}`);
                     this.setState({
                         usersUnderGroup: response.map((item, index) => {
-                            return { id: item.name, text: item.name };
+                            return { id: item, text: item };
                         })
                     })
                 }).catch((ex) => {
@@ -91,27 +88,50 @@ class UpdateBid extends React.Component {
             this.setState({ isLoading: false })
         }
     }
+    updateCommissionDetails = async (groupName, bidMonth, biddedFor) => {
+        try {
+            const commissionPercentage = _.find(this.state.groupDetails, { groupName }).chitCommission;
+            console.log(`Commissiong for selected group ${groupName} is ${commissionPercentage}`)
+            const commissionDetails = {
+                bidMonth,
+                groupName,
+                admin: sessionStorage.getItem('user'),
+                commission: parseInt(commissionPercentage * biddedFor) / 100
+            }
+            await Request(`http://localhost:8080/addCommission`, {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                body: JSON.stringify(commissionDetails),
+                credentials: 'include'
+            })
+        }
+        catch (ex) {
+            console.log(ex.message);
+            throw new Error(ex.message);
+        }
+    }
     updateGroupWithBidDetails = async () => {
         const group = this.state.groupSelected;
-        const month = this.state.monthSelected;
-        const bidAmount = this.state.bidAmount;
-        const biddedUser = this.state.biddedUser;
-        const bidDate = Date(Date.now());
-        const bidDetailsToBeUpdated={month,bidAmount,biddedUser,bidDate};
-
-        console.log(group, month, bidAmount, biddedUser,bidDate)
-        fetch(`http://localhost:8080/updateGroup/?admin=${sessionStorage.getItem('user')}&groupName=${group}`, {
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            body: bidDetailsToBeUpdated,
-            credentials: 'include' // include sends cookie information from client to server.
-        }).then(response => response.json())
-            .then(response => {
-                console.log(`Users under group and admin ${JSON.stringify(response)}`);
-                
-            }).catch((ex) => {
-                console.log(ex);
+        const bidMonth = this.state.monthSelected;
+        const biddedFor = this.state.bidAmount;
+        const biddedBy = this.state.biddedUser;
+        const bidDetailsToBeUpdated = { bidMonth, biddedFor, biddedBy };
+        console.log(bidDetailsToBeUpdated, group)
+        try {
+            const response = await Request(`http://localhost:8080/updateGroup/?admin=${sessionStorage.getItem('user')}&groupName=${group}`, {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'PUT',
+                body: JSON.stringify(bidDetailsToBeUpdated),
+                credentials: 'include'
             })
+            await this.updateCommissionDetails(group, bidMonth, biddedFor)
+            console.log(response);
+            this.props.changeState('successMessage', 'Successfully updated bid details');
+        }
+        catch (ex) {
+            console.log(ex);
+            this.props.changeState('errorMessage', 'Successfully updated bid details');
+        }
     }
     async componentDidMount() {
         await this.fetchGroupDetails();

@@ -1,0 +1,14 @@
+html [type=button]{
+    -webkit-appearance: textfield
+}
+.writeableDiv{
+    height: '100%';
+    outline: none;
+    text-align: left;
+    font-family: ibm-plex-sans,Helvetica Neue,Arial, sans-serif;
+    font-size: .875rem;
+    color: #152935;
+    font-weight: 600;
+    padding: .7rem;
+
+}

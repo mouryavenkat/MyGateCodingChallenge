@@ -27,3 +27,12 @@
 .menuItem{
     right: 2%;
 }
+.bx--overflow-menu-options:before{
+    left:10rem
+}
+.styleForLogoutOptions{
+    background-color: #0f212e;
+    border: none;
+    height: 3.2rem;
+    cursor: pointer 
+}

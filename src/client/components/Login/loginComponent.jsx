@@ -46,7 +46,7 @@ class AlternateLogin extends React.Component {
       <div style={{ height: '100%', position: 'relative' }}>
         <div style={{ marginTop: '50%' }}>
           <p style={{ padding: '.5rem' }} className='bx--label'>Alternate Login Through</p><br />
-          <Button style={{ backgroundColor: '#4267b2', textAlign: 'left', borderRadius: '12px', verticalAlign: 'baseline' }}>
+          <Button style={{ backgroundColor: '#4267b2', textAlign: 'left', borderRadius: '12px', verticalAlign: 'baseline', outline: 'none' }}>
             <div className='row'>
               <div className='col' style={{ marginTop: '6px' }} >
                 Continue With
@@ -58,16 +58,17 @@ class AlternateLogin extends React.Component {
           </Button>
           <br />
           <br />
-          <a href='http://localhost:8080/loginMe'><Button className='bx--btn--danger' style={{ textAlign: 'left', borderRadius: '12px', backgroundColor: '#e0182d', color: '#fff' }} onClick={(evt) => <Link to="/loginMe" >Click to login</Link>}>
-            <div className='row'>
-              <div className='col' style={{ marginTop: '6px' }} >
-                Continue With
+          <a href='http://localhost:8080/loginMe'>
+            <Button className='bx--btn--danger' style={{ textAlign: 'left', borderRadius: '12px', backgroundColor: '#e0182d', color: '#fff', outline: 'none' }} onClick={(evt) => <Link to="/loginMe" >Click to login</Link>}>
+              <div className='row'>
+                <div className='col' style={{ marginTop: '6px' }} >
+                  Continue With
                       </div>
-              <div className='circleRed'>
-                <div style={{ marginTop: '6px' }}>G</div>
+                <div className='circleRed'>
+                  <div style={{ marginTop: '6px' }}>G</div>
+                </div>
               </div>
-            </div>
-          </Button></a>
+            </Button></a>
         </div>
       </div>
     )

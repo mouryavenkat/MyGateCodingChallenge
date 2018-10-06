@@ -3,8 +3,7 @@ const Schema = mongoose.Schema;
 const groupSchema = new Schema({
     groupName: { type: String, required: true, strict: true },
     groupBudget: { type: Number, required: true, strict: true },
-    minCount: { type: Number, required: true, strict: true },
-    maxCount: { type: Number, required: true, strict: true },
+    totalMembers: { type: Number, required: true, strict: true },
     fromDate: {
         year: { type: Number, required: true, strict: true },
         month: { type: Number, required: true, strict: true },
@@ -17,10 +16,14 @@ const groupSchema = new Schema({
     },
     chitCommission: { type: Number, required: true, strict: true },
     description: { type: String, required: true, strict: true },
-    admin: { type: String, required: true, strict: true },
     totalMonths: { type: Number, required: true, strict: true },
-    bidDetails: { type: Schema.Types.Mixed, required: false }
-})
+    bidDetails: [{ bidMonth: String, biddedBy: String, biddedFor: String }],
+    customers: { type: Array, required: false },
+    admin: { type: String, required: true, strict: true },
+    ActualPayPerMonth: { type: Number, require: true, strict: true },
+    payableAmountAfterBid: { type: Number},
+    payments: { type: String }
+}, { strict: false })
 const createModelForGroup = () => {
     const group = mongoose.model('groups', groupSchema);
     return group;

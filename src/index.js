@@ -1,6 +1,6 @@
 import React from 'react';
 //Order in which we import is always important. 
-import './resources/carbon-components.css'
+import './client/resources/carbon-components.css'
 
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom'

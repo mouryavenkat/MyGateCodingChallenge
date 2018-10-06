@@ -5,7 +5,8 @@ import CreateUser from './createUser/createUser';
 import DeleteUser from './deleteUser/deleteUser'
 import UpdateTeam from './updateTeam/updateTeam';
 import UpdateUser from './updateUser/updateUser';
-import UpdateBid from './updateBid/updateBid'
+import UpdateBid from './updateBid/updateBid';
+import Request from '../../utilities/request'
 class DashboardComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -13,36 +14,43 @@ class DashboardComponent extends React.Component {
       displayScreen: 'home',
       errorMessage: '',
       successMessage: '',
-      redirectToLoginPage: false
+      redirectToLoginPage: false,
+      displayOverFlowOptions: false
     }
   }
   redirect() {
     this.props.history.push('/login')
   }
-  componentDidMount() {
-    console.log(sessionStorage.getItem('user') === null)
+  killSession = async () => {
+    await Request('http://localhost:8080/deleteSession',{credentials:'include'})
+    sessionStorage.setItem('user', undefined)
     console.log(sessionStorage.getItem('user'))
-    if (sessionStorage.getItem('user') !== null) {
+    this.redirect()
+  }
+  setUserCredentials = async () => {
+    if (sessionStorage.getItem('user') !== null && sessionStorage.getItem('user') !== undefined && sessionStorage.getItem('user') !== 'undefined') {
       console.log(sessionStorage.getItem('user'))
       console.log('UserInfo found in local storage');
     }
     else {
-      fetch('http://localhost:8080/fetchUserInfo', {
-        credentials: 'include' // include sends cookie information from client to server.
-      }).then(response => response.json())
-        .then(response => {
-          if (response.user) {
-            sessionStorage.setItem('user', response.user);
-          }
-          else {
-            console.log('Redirecting to login page');
-            this.setState({ redirectToLoginPage: true });
-          }
-        }).catch((ex) => {
-          console.log('Redirecting to login page');
-          this.setState({ redirectToLoginPage: true });
+      try {
+        const response = await Request('http://localhost:8080/fetchUserInfo', {
+          credentials: 'include'
         })
+        if (!response.user || response.user === null || response.user === undefined) {
+          return this.redirect();
+        }
+        console.log(response)
+        sessionStorage.setItem('user', response.user);
+      }
+
+      catch (ex) {
+        this.redirect();
+      }
     }
+  }
+  async componentDidMount() {
+    this.setUserCredentials();
   }
   changeState = (stateName, stateValue) => {
     this.setState({ [stateName]: stateValue })
@@ -82,17 +90,31 @@ class DashboardComponent extends React.Component {
         {this.state.redirectToLoginPage === true ? <Fragment>
           {this.redirect()}
         </Fragment> : ''}
+        {/* Navigaton bar */}
         <div style={{ width: '100%', position: 'absolute', top: 0, left: 0 }}>
           <nav aria-label="Top Header" className='bx--top-nav' role="navigation" style={{ height: '3.2rem' }}>
-            <button style={{ backgroundColor: '#0f212e', border: 'none', position: 'absolute', left: '1%', height: '3.2rem' }}>
-              <img src={require('../../resources/images/logo.svg')} style={{ marginTop: '0.5rem', marginBottom: '0.5rem', width: '2rem' }} />
-            </button>
-            <div className="dropdown" style={{ right: '1%', position: 'absolute', }}>
-              <button style={{ backgroundColor: '#0f212e', border: 'none', height: '3.2rem' }} >
-                <center><img src={require('../../resources/images/userprofile.svg')} style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }} /></center>
-
+            <div className="bx--top-nav__left-container " >
+              <button style={{ backgroundColor: '#0f212e', border: 'none', position: 'absolute', height: '3.2rem' }}>
+                <img src={require('../../resources/images/logo.svg')} style={{ width: '2rem' }} />
               </button>
             </div>
+            <div className="bx--top-nav__right-container " >
+              <div aria-haspopup="true" aria-expanded="true" class="bx--overflow-menu bx--overflow-menu--open" aria-label="" tabindex="0" style={{ right: '.5rem', height: '100%' }}>
+                <button className='styleForLogoutOptions' onClick={evt => this.setState({ displayOverFlowOptions: !this.state.displayOverFlowOptions })} style={{ outline: 'none' }}>
+                  <center><img src={require('../../resources/images/userprofile.svg')} style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }} /></center>
+                </button>
+                {this.state.displayOverFlowOptions === true ?
+                  <ul class="bx--overflow-menu-options bx--overflow-menu-options--open" tabindex="-1" style={{ left: '-9rem', top: '3.4rem' }}>
+                    <li class="bx--overflow-menu-options__option" role="presentation">
+                      <button class="bx--overflow-menu-options__btn" role="menuitem">{sessionStorage.getItem('user')}</button>
+                    </li>
+                    <li class="bx--overflow-menu-options__option bx--overflow-menu-options__option--danger" role="presentation">
+                      <button class="bx--overflow-menu-options__btn" role="menuitem" onClick={evt => this.killSession()}>Logout</button>
+                    </li>
+                  </ul> : ''}
+              </div>
+            </div>
+
           </nav>
         </div>
         <div className='sideBarWidth' >
@@ -111,9 +133,7 @@ class DashboardComponent extends React.Component {
                 <title>close Notification</title>
                 <path d="M6.32 5L10 8.68 8.68 10 5 6.32 1.32 10 0 8.68 3.68 5 0 1.32 1.32 0 5 3.68 8.68 0 10 1.32 6.32 5z"></path>
               </svg>
-
             </button>
-
           </div>
           : ''}
         {this.state.successMessage !== '' ?

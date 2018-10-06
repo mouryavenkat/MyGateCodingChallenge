@@ -5,6 +5,7 @@ const createGroup = require('../../model/services/entityServices/Group/createGro
 const getGroups = require('../../model/services/entityServices/Group/fetchGroups');
 const deleteGroup = require('../../model/services/entityServices/Group/deleteGroup');
 const updateGroup = require('../../model/services/entityServices/Group/updateGroup');
+const fetchUsersUnderGroup = require('../../model/services/entityServices/Group/fetchUsersUnderGroup');
 module.exports = (app) => {
     app.route('/healthCheck')
         .get((req, res) => {
@@ -22,4 +23,6 @@ module.exports = (app) => {
         .delete(deleteGroup.DeleteGroupDetails);
     app.route('/updateGroup')
         .put(updateGroup.updateGroup)
+    app.route('/fetchUsersUnderGroup')
+        .get(fetchUsersUnderGroup.fetchUsersUnderGroup)
 }

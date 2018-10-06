@@ -103,7 +103,7 @@ class UpdateTeam extends React.Component {
         <Loading withOverlay={true} active={this.state.isLoading} style={{ verticalAlign: 'baseline' }} />
 
         {this.state.UpdateTeam !== '' ?
-          (<UpdateTeamSubComponent groupName={this.state.UpdateTeam} />) :
+          (<UpdateTeamSubComponent groupName={this.state.UpdateTeam} updateParentState={this.props.changeState}/>) :
 
           this.state.displayGroups ?
 
