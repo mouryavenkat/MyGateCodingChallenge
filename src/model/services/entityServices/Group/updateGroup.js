@@ -29,8 +29,9 @@ const updateUsersAndPayments = (requestBody, groupName, groupDetails) => {
     console.log(groupDetails.customers)
     _.forEach(Object.keys(payments), (iterate) => {
         _.forEach(groupDetails.customers, (iterateCustomer) => {
-            payments[iterate] = {
-                [iterateCustomer]: [{
+            console.log(payments[iterate])
+            if (_.isUndefined(payments[iterate][iterateCustomer])) {
+                payments[iterate][iterateCustomer] = [{
                     amountPaid: 0,
                     paidOn: ''
                 }]
@@ -51,12 +52,14 @@ const updateGroup = async (req, res) => {
             }
             else {
                 updateBidDetailsInGroup(groupDetails, req.body)
-                groupDetails['payableAmountAfterBid'] = groupDetails.ActualPayPerMonth - (req.body.biddedFor * ((100 - groupDetails.chitCommission) / 100)) / groupDetails.totalMembers
+                req.body.payableAmountAfterBid = groupDetails.ActualPayPerMonth - (req.body.biddedFor * ((100 - groupDetails.chitCommission) / 100)) / groupDetails.totalMembers
                 console.log(groupDetails)
             }
             const groupObj = new group(groupDetails)
-            res.json(await createOperation.saveDocumentToDB(groupObj))
+            return res.json(await createOperation.saveDocumentToDB(groupObj))
         }
+        logger.error(`No group found with name ${req.query.groupName}` )
+        return res.status(500).json({ code: 500, message: `No group found with name ${req.query.groupName}` });
     }
     catch (ex) {
         logger.error(ex.message);

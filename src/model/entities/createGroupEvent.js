@@ -21,7 +21,6 @@ const groupSchema = new Schema({
     customers: { type: Array, required: false },
     admin: { type: String, required: true, strict: true },
     ActualPayPerMonth: { type: Number, require: true, strict: true },
-    payableAmountAfterBid: { type: Number},
     payments: { type: String }
 }, { strict: false })
 const createModelForGroup = () => {

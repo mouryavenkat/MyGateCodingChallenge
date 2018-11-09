@@ -1,8 +1,7 @@
 import React from 'react';
-import './updateTeam.css';
+import './ViewTeam.css';
 import { Button, Loading } from 'carbon-components-react'
-import DeleteTeam from './deleteTeam';
-import UpdateTeamSubComponent from './updateTeamComponents/updateIndex'
+import  ViewUsersAndPayments from './ViewUsersAndPayments/ViewUsersAndPayments'
 const _ = require('lodash');
 const axios = require('axios');
 
@@ -20,7 +19,7 @@ class DisplayAllTeams extends React.Component {
                   <img
                     src={require('../../../resources/images/cardLogo.svg')}
                     style={{ verticalAlign: 'baseline', marginTop: '0.7rem', height: '2.6rem' }}
-                    >
+                  >
                   </img>
                 </center>
               </div>
@@ -29,16 +28,11 @@ class DisplayAllTeams extends React.Component {
                 <div style={{ marginTop: '.5rem', maxHeight: '4.5rem', height: '4.5rem', overflow: 'auto', position: 'absolute' }}>
                   <p className="card-text">{item.description}</p>
                 </div>
-                <div style={{ right: '0.5rem', bottom: '.5rem', position: 'absolute', marginTop: '.5rem' }}>
-                  <Button className='bx--btn--danger' style={{ marginTop: '1rem', right: '10px', marginRight: '1rem' }}
-                    onClick={(evt) => {
-                      this.props.changeState('showModalForDeleteteam', true);
-                      this.props.changeState('groupNameToDelete', item.groupName);
-                    }}>Delete</Button>
+                <div style={{ right: '0.5rem', bottom: '.5rem', position: 'absolute', marginTop: '.5rem', textAlign: 'center' }}>
                   <Button style={{ marginTop: '1rem', right: '0.5rem' }} onClick={(evt) => {
-                    this.props.changeState('UpdateTeam', item.groupName)
-                    
-                  }}>Update</Button>
+                    this.props.changeState('selectedGroup',item.groupName);
+                    this.props.parentStateChange('viewTeamInnerState', true)
+                  }}>View</Button>
                 </div>
               </div>
             </div>
@@ -48,7 +42,7 @@ class DisplayAllTeams extends React.Component {
     )
   }
 }
-class UpdateTeam extends React.Component {
+class ViewTeam extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,7 +51,8 @@ class UpdateTeam extends React.Component {
       setOfGroups: [],
       showModalForDeleteteam: false,
       groupNameToDelete: '',
-      UpdateTeam: ''
+      UpdateTeam: '',
+      selectedGroup:''
     }
   }
   componentDidMount = () => {
@@ -98,20 +93,15 @@ class UpdateTeam extends React.Component {
   render() {
     return (
       <div style={{ position: 'absolute', width: '100%' }} >
-        {this.state.showModalForDeleteteam === true ? <DeleteTeam changeState={this.changeState} parentChangeState={this.props.changeState} groupNameToDelete={this.state.groupNameToDelete} setOfGroups={this.state.setOfGroups} /> : ''}
         <Loading withOverlay={true} active={this.state.isLoading} style={{ verticalAlign: 'baseline' }} />
-
-        {this.state.UpdateTeam !== '' ?
-          (<UpdateTeamSubComponent groupName={this.state.UpdateTeam} updateParentState={this.props.changeState}/>) :
-
-          this.state.displayGroups ?
-
-            <div className='container-fluid'>
-              <DisplayAllTeams setOfGroups={this.state.setOfGroups} changeState={this.changeState} parentStateChange={this.props.changeState} />
-            </div> : ''}
+        {this.props.viewTeamInnerState === true ? <ViewUsersAndPayments selectedGroup={this.state.selectedGroup}/> :
+          <div className='container-fluid'>
+            <DisplayAllTeams setOfGroups={this.state.setOfGroups} changeState={this.changeState} parentStateChange={this.props.changeState} />
+          </div>
+        }
       </div>
 
     )
   }
 }
-export default UpdateTeam;
+export default ViewTeam;

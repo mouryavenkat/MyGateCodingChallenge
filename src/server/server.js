@@ -39,7 +39,6 @@ require('./controllers/api-controller')(app);
 require('./controllers/user-controller')(app);
 require('./controllers/admin-controller')(app);
 require('./controllers/commission-controller')(app);
-require('./controllers/payment-controller')(app)
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieSession({

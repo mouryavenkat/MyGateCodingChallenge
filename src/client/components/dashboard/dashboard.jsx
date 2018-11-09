@@ -1,3 +1,4 @@
+import openSocket from 'socket.io-client';
 import React, { Fragment } from 'react';
 import './dashboard.css'
 import CreateTeam from './createTeam/createTeam';
@@ -5,8 +6,11 @@ import CreateUser from './createUser/createUser';
 import DeleteUser from './deleteUser/deleteUser'
 import UpdateTeam from './updateTeam/updateTeam';
 import UpdateUser from './updateUser/updateUser';
-import UpdateBid from './updateBid/updateBid';
-import Request from '../../utilities/request'
+import ViewTeam from './ViewTeam/ViewTeam';
+import Request from '../../utilities/request';
+import Messaging from './messaging/messaging';
+import Notifcations from './notifications/notifications'
+
 class DashboardComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -15,14 +19,16 @@ class DashboardComponent extends React.Component {
       errorMessage: '',
       successMessage: '',
       redirectToLoginPage: false,
-      displayOverFlowOptions: false
+      displayOverFlowOptions: false,
+      viewTeamInnerState: false
     }
+    this.socket;
   }
   redirect() {
     this.props.history.push('/login')
   }
   killSession = async () => {
-    await Request('http://localhost:8080/deleteSession',{credentials:'include'})
+    await Request('http://localhost:8080/deleteSession', { credentials: 'include' })
     sessionStorage.setItem('user', undefined)
     console.log(sessionStorage.getItem('user'))
     this.redirect()
@@ -41,6 +47,8 @@ class DashboardComponent extends React.Component {
           return this.redirect();
         }
         console.log(response)
+        this.socket.emit('login', response.user);
+        console.log(this.socket.id)
         sessionStorage.setItem('user', response.user);
       }
 
@@ -50,6 +58,7 @@ class DashboardComponent extends React.Component {
     }
   }
   async componentDidMount() {
+    this.socket = openSocket('http://localhost:3006');
     this.setUserCredentials();
   }
   changeState = (stateName, stateValue) => {
@@ -65,7 +74,7 @@ class DashboardComponent extends React.Component {
       </li>
       <li className="bx--list__item" data-toggle="collapse" data-target="#viewList" style={{ marginBottom: '0.5rem' }}>VIEW
         <ul className="bx--list--unordered collapse" id='viewList' style={{ marginTop: '0.5rem', padding: '0rem', marginLeft: '1rem' }}>
-          <li className="bx--list__item" style={{ marginBottom: '0.2rem' }}>VIEW TEAM</li>
+          <li className="bx--list__item" style={{ marginBottom: '0.2rem' }} onClick={(evt) => { this.setState({ viewTeamInnerState: false, displayScreen: 'viewTeam' }) }}>VIEW TEAM</li>
           <li className="bx--list__item" style={{ marginBottom: '0.5rem' }}>VIEW USER</li>
         </ul>
       </li>
@@ -73,7 +82,6 @@ class DashboardComponent extends React.Component {
         <ul className="bx--list--unordered collapse" id='updateList' style={{ marginTop: '0.5rem', padding: '0rem', marginLeft: '1rem' }}>
           <li className="bx--list__item" style={{ marginBottom: '0.2rem' }} onClick={(evt) => { this.setState({ displayScreen: 'updateTeam' }) }}>UPDATE TEAM</li>
           <li className="bx--list__item" style={{ marginBottom: '0.2rem' }} onClick={(evt) => { this.setState({ displayScreen: 'updateUser' }) }}>UPDATE USER</li>
-          <li className="bx--list__item" style={{ marginBottom: '0.5rem' }} onClick={(evt) => { this.setState({ displayScreen: 'updateBid' }) }}>UPDATE BID</li>
         </ul>
       </li>
       <li className="bx--list__item" data-toggle="collapse" data-target="#deleteList" style={{ marginBottom: '0.5rem' }}>DELETE
@@ -81,6 +89,15 @@ class DashboardComponent extends React.Component {
           <li className="bx--list__item" style={{ marginBottom: '0.2rem' }}>CREATE TEAM</li>
           <li className="bx--list__item" style={{ marginBottom: '0.5rem' }} onClick={(evt) => { this.setState({ displayScreen: 'deleteUser' }) }}>DELETE USER </li>
         </ul>
+      </li>
+      <li className="bx--list__item" style={{ marginBottom: '0.5rem' }} onClick={evt => this.setState({ displayScreen: 'messaging' })}>
+        INSTANT MESSAGING
+      </li>
+      <li className="bx--list__item" style={{ marginBottom: '0.5rem' }} onClick={evt => this.setState({ displayScreen: 'messaging' })} onClick={evt => this.setState({ 'displayScreen': 'notifications' })}>
+        NOTIFICATIONS
+        <button style={{ marginLeft: '5px', borderRadius: '12px', height: '20px', backgroundColor: 'red', border: 'none', outline: 'none' }}>
+          <span style={{ fontSize: 10, fontWeight: 600, color: 'white' }}>2</span>
+        </button>
       </li>
     </ul >
   }
@@ -94,9 +111,11 @@ class DashboardComponent extends React.Component {
         <div style={{ width: '100%', position: 'absolute', top: 0, left: 0 }}>
           <nav aria-label="Top Header" className='bx--top-nav' role="navigation" style={{ height: '3.2rem' }}>
             <div className="bx--top-nav__left-container " >
-              <button style={{ backgroundColor: '#0f212e', border: 'none', position: 'absolute', height: '3.2rem' }}>
-                <img src={require('../../resources/images/logo.svg')} style={{ width: '2rem' }} />
-              </button>
+              <div style={{ height: "100%" }}>
+                <button style={{ backgroundColor: '#0f212e', border: 'none', position: 'absolute', height: '3.2rem' }}>
+                  <img src={require('../../resources/images/logo.svg')} style={{ width: '2rem' }} />
+                </button>
+              </div>
             </div>
             <div className="bx--top-nav__right-container " >
               <div aria-haspopup="true" aria-expanded="true" class="bx--overflow-menu bx--overflow-menu--open" aria-label="" tabindex="0" style={{ right: '.5rem', height: '100%' }}>
@@ -156,7 +175,9 @@ class DashboardComponent extends React.Component {
           {this.state.displayScreen === 'deleteUser' ? <DeleteUser changeState={this.changeState} /> : ''}
           {this.state.displayScreen === 'updateTeam' ? <UpdateTeam changeState={this.changeState} /> : ''}
           {this.state.displayScreen === 'updateUser' ? <UpdateUser changeState={this.changeState} /> : ''}
-          {this.state.displayScreen === 'updateBid' ? <UpdateBid changeState={this.changeState} /> : ''}
+          {this.state.displayScreen === 'viewTeam' ? <ViewTeam changeState={this.changeState} viewTeamInnerState={this.state.viewTeamInnerState} /> : ''}
+          {this.state.displayScreen === 'messaging' ? <Messaging socket={this.socket} /> : ''}
+          {this.state.displayScreen === 'notifications' ? <Notifcations /> : ''}
         </div>
       </div >
     )

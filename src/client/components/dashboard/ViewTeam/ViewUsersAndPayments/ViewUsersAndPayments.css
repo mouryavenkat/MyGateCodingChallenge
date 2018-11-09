@@ -1,0 +1,15 @@
+.bx--expandable-row-v2{
+    background-color: '#fff';
+    border-bottom: 0;
+    border-right: 0;
+  }
+.bx--data-table-v2:hover tr{
+    background-color: '#fff';
+    border-bottom: 0;
+    border-right: 0;
+}
+.removeBackgroundBorder{
+    background-color: '#fff';
+    border-bottom: 0px;
+    border-right: 0px;
+}
