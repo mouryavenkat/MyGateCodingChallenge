@@ -91,6 +91,9 @@ class ViewFoodCourts extends React.Component {
                 if (iterate['applicant'].indexOf(searchText) > -1 || iterate['address'].indexOf(searchText) > -1) {
                     return true
                 }
+                if(iterate['expirationdate'] && iterate['expirationdate'].indexOf(searchText)>-1){
+                    return true
+                }
             })
             console.log(setOfFoodCourts)
             this.setState({ setOfFoodCourts, isLoading: false })

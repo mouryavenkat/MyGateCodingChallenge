@@ -17,12 +17,13 @@ class DashboardComponent extends React.Component {
     }
   }
   changeState = (stateName, stateValue) => {
+    console.log(stateName,stateValue)
     this.setState({ [stateName]: stateValue })
   }
   sideBarMenu = () => {
     return <ul className="bx--list--unordered" style={{ cursor: 'pointer' }}>
       <li className="bx--list__item" style={{ marginBottom: '0.5rem' }} onClick={evt => this.setState({ displayScreen: 'addFoodCourts' })}>
-        ADD FOOD COURT
+        REGISTER FOOD TRUCK
       </li>
       <li className="bx--list__item" style={{ marginBottom: '0.5rem' }} onClick={evt => this.setState({ displayScreen: 'viewFoodCourts' })}>
         VIEW FOOD COURTS
@@ -111,14 +112,14 @@ class DashboardComponent extends React.Component {
                 top: '.2rem',
                 right: '16px',
               }}>
-                <ComboBox 
+                <ComboBox
                   className='hideOverflow'
                   items={[
                     { id: 'All', text: 'All' },
                     { id: 'APPROVED', text: 'APPROVED' },
                     { id: 'REQUESTED', text: 'REQUESTED' }
                   ]}
-                  itemToString={(item) => { if (item.text) { return item.text.toString() } }}
+                  itemToString={(item) => { if (item && item.text) { return item.text.toString() } }}
                   placeholder="Filter By status"
                   onChange={(evt) => {
                     if (evt.selectedItem) {

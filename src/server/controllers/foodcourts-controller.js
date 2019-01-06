@@ -2,7 +2,10 @@ const createDatastore = require('../../model/services/entityServices/datastore/d
 const getDataset = require('../../model/services/entityServices/datastore/getdatastore');
 const deleteFoodCourt = require('../../model/services/entityServices/datastore/deleteFoodCourt');
 const getFoodCOurtByLocation = require('../../model/services/entityServices/datastore/getTruckByLocation')
+const createRequest = require('../../model/services/entityServices/datastore/createRequest');
 module.exports = (app) => {
+    app.route('/createRequest')
+        .post(createRequest.createRequest)
     app.route('/datastore')
         .post(createDatastore.createDataset);
     app.route('/fetchFoodCourts')
