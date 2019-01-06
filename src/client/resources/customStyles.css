@@ -1,0 +1,13 @@
+.noflex{
+    display:block
+}
+.fullWidth{
+    width:100%
+}
+.bx--form-item{
+    font-family: "ibm-plex-sans", Helvetica Neue, Arial, sans-serif;
+    display: block
+}
+.bx--date-picker.bx--date-picker--single .bx--date-picker__input {
+    width: 100%;
+  }
