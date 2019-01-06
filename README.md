@@ -49,7 +49,7 @@ Features:
 
         Type ahead search, the search can be on food court name or expiration date or street_name. This is a substring search
 
-    4) You can add a new food court from the UI.
+    4) You can request for starting  a new food court from the UI.
 
     API SUPPORT:
     ------------
