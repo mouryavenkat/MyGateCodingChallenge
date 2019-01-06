@@ -21,7 +21,8 @@ const createConnection = async () => {
         socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
         useNewUrlParser: true // Allows connection URL to be passed as string
     };
-    var mongodb_conn_str = process.env.MONGODB_CONN_STR || 'mongodb://localhost:27017/chitfunds';
+    var mongodb_conn_str = process.env.MONGODB_CONN_STR || `mongodb://${process.env.hostIp}:27017/chitfunds`;
+    console.log(mongodb_conn_str)
     try {
         mongoose.connect(mongodb_conn_str, options);
         await connectionStatus(mongodb_conn_str)

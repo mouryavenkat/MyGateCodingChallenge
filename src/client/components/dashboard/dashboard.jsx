@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import './dashboard.css'
 import ViewFoodCourts from './ViewFoodCourts/ViewFoodCourts'
 import AddFoodCourt from './AddFoodCourt/AddFoodCourt'
-import { Search } from 'carbon-components-react'
+import { Search, ComboBox } from 'carbon-components-react'
 class DashboardComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -103,7 +103,33 @@ class DashboardComponent extends React.Component {
           : ''}
         <div style={{ marginTop: '3.4rem', marginLeft: '272px', position: 'relative' }} >
           {this.state.displayScreen === 'addFoodCourts' ? <AddFoodCourt changeState={this.changeState} /> : ''}
-          {this.state.displayScreen === 'viewFoodCourts' ? <ViewFoodCourts changeState={this.changeState} viewTeamInnerState={this.state.viewTeamInnerState} searchText={this.state.searchText} /> : ''}
+          {this.state.displayScreen === 'viewFoodCourts' ?
+            <div>
+              <ViewFoodCourts changeState={this.changeState} viewTeamInnerState={this.state.viewTeamInnerState} searchText={this.state.searchText} statusFilter={this.state.statusFilter} />
+              <div style={{
+                width: '10rem', position: 'absolute',
+                top: '.2rem',
+                right: '16px',
+              }}>
+                <ComboBox 
+                  className='hideOverflow'
+                  items={[
+                    { id: 'All', text: 'All' },
+                    { id: 'APPROVED', text: 'APPROVED' },
+                    { id: 'REQUESTED', text: 'REQUESTED' }
+                  ]}
+                  itemToString={(item) => { if (item.text) { return item.text.toString() } }}
+                  placeholder="Filter By status"
+                  onChange={(evt) => {
+                    if (evt.selectedItem) {
+                      this.changeState('statusFilter', evt.selectedItem.text)
+                    }
+                    else {
+                      this.changeState('statusFilter', '')
+                    }
+                  }}
+                />
+              </div></div> : ''}
         </div>
       </div >
     )

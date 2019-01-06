@@ -98,6 +98,15 @@ class ViewFoodCourts extends React.Component {
         }, 1000)
 
     }
+    filterItemsByStatus = (status) => {
+        this.setState({
+            'setOfFoodCourts': this.state.setOfFoodCourtsClone.filter((item) => {
+                if (item.status === status) {
+                    return true
+                }
+            })
+        })
+    }
     // When searchText changes this component will be updated . Check with prevprops and if searchText causes component to be updated then filter the items by searchText
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.searchText !== this.props.searchText) {
@@ -107,6 +116,16 @@ class ViewFoodCourts extends React.Component {
             }
             else {
                 this.filterItems(this.props.searchText)
+            }
+        }
+        if (prevProps.statusFilter !== this.props.statusFilter) {
+            console.log(`applying filter by status ${this.props.statusFilter}`)
+            if (this.props.statusFilter === '' || this.props.statusFilter === 'All') {
+                console.log(this.state.setOfFoodCourtsClone)
+                this.setState({ setOfFoodCourts: this.state.setOfFoodCourtsClone })
+            }
+            else {
+                this.filterItemsByStatus(this.props.statusFilter)
             }
         }
     }
