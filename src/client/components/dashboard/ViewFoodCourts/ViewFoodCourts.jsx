@@ -81,17 +81,16 @@ class ViewFoodCourts extends React.Component {
         console.log('Setting timer to null');
         this.timer = null;
     }
-    filterItems = (searchText) => {
+    filterItems = (searchText, dataset) => {
         clearTimeout(this.timer)
         setTimeout(() => {
             this.setState({ isLoading: true })
             console.log('waited for a second')
-            const setOfFoodCourts = _.filter(this.state.setOfFoodCourts, (iterate) => {
-                console.log(iterate)
+            const setOfFoodCourts = _.filter(dataset, (iterate) => {
                 if (iterate['applicant'].indexOf(searchText) > -1 || iterate['address'].indexOf(searchText) > -1) {
                     return true
                 }
-                if(iterate['expirationdate'] && iterate['expirationdate'].indexOf(searchText)>-1){
+                if (iterate['expirationdate'] && iterate['expirationdate'].indexOf(searchText) > -1) {
                     return true
                 }
             })
@@ -118,7 +117,13 @@ class ViewFoodCourts extends React.Component {
                 this.setState({ setOfFoodCourts: this.state.setOfFoodCourtsClone })
             }
             else {
-                this.filterItems(this.props.searchText)
+                if (this.props.searchText.length < prevProps.searchText.length) {
+                    console.log('filtering on clone')
+                    this.filterItems(this.props.searchText, this.state.setOfFoodCourtsClone)
+                }
+                else {
+                    this.filterItems(this.props.searchText, this.state.setOfFoodCourts)
+                }
             }
         }
         if (prevProps.statusFilter !== this.props.statusFilter) {
