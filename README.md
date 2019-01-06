@@ -4,9 +4,9 @@ This is for mygate coding challenge
 
 Project Clone:
     
-    git clone git@github.com:mouryavenkat/MyGateCodingChallenge.git
+        git clone git@github.com:mouryavenkat/MyGateCodingChallenge.git
 
-    Do 'npm install' 
+        Do 'npm install' 
 
 Step-1 : You need to install mongoDB. Best way is skip installation process is to use  docker image of mongoDB. Run the following command.
 
