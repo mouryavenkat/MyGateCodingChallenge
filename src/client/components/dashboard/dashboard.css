@@ -21,6 +21,9 @@
         
     }
 }
+.searchWidth{
+    width:30%
+}
 .dropdown-toggle::after{
     border: 0
 }

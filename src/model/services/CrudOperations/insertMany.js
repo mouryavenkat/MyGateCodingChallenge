@@ -1,4 +1,3 @@
-
 const logger = require('../../../config/logger').getLogger();
 const saveDocumentsToDB = async (eventObject) => {
     try {

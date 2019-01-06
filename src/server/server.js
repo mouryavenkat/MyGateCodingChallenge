@@ -6,7 +6,6 @@ const passport = require('passport');
 const cookieSession = require('cookie-session');
 const app = express();
 const CONTENT_SERVER_PORT = process.env.ADAPTER_TEMPLATE_ENGINE_PORT ? process.env.ADAPTER_TEMPLATE_ENGINE_PORT : 8080
-require('./authStrategies/google');
 const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -35,10 +34,7 @@ app.use(function (req, res, next) {
     next();
 });
 // Has to be placed only after cors middle ware because cors has to be enabled before routing 
-require('./controllers/api-controller')(app);
-require('./controllers/user-controller')(app);
-require('./controllers/admin-controller')(app);
-require('./controllers/commission-controller')(app);
+require('./controllers/foodcourts-controller')(app);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieSession({
@@ -47,28 +43,7 @@ app.use(cookieSession({
 }))
 
 
-app.get('/loginMe', passport.authenticate('google', {
-    scope: ['profile', 'email']
-}))
-app.get('/auth/google/redirect', passport.authenticate('google'), ((req, res) => {
 
-    console.log(req.session.passport);
-    req.session.username = req.session.passport.user;
-    res.redirect('http://localhost:3000/dashboard');
-}))
-app.get('/fetchUserInfo', (req, res) => {
-    console.log(`Returning logged in emailId`);
-    console.log(req.session);
-    if (req.session && req.session.passport && req.session.passport && req.session.passport.user) {
-        console.log(req.session.passport.user)
-        return res.json({ user: req.session.passport.user });
-    }
-    return res.status(200).json({ code: 500, message: 'No user session found' });
-})
-app.get('/deleteSession', (req, res) => {
-    req.session.passport.user = undefined;
-    res.json({code:200,message:'successful'});
-})
 
 if (CONTENT_SERVER_PORT != undefined) {
     mongoConnection.createConnection().then(() => {
