@@ -8,6 +8,7 @@ Project Clone:
 
         Do 'npm install' 
 
+
 Step-1 : You need to install mongoDB. Best way is skip installation process is to use  docker image of mongoDB. Run the following command.
 
         --> docker run --name mongoImage -d mongo:latest
@@ -30,6 +31,12 @@ Step-2 : Now that we have mongoDB up and running, We need to connect server to m
 
         ---> If everything went well and mongo connection is established, the server will start on 8080 port
 
+        ---> To pull all the existing api data into datamodel, please access the following API
+
+                url: http://localhost:8080/syncdata
+
+                methood: POST
+
 
 Step-3 : Now that we started our server, the only step is to start the client. To do that just enter ( npm start ). Do it other window without halting the server.
 
@@ -44,7 +51,9 @@ Step-3 : Now that we started our server, the only step is to start the client. T
 Features: 
 
     1:)You can view all the Food Courts by default . 
+
     2:)If you want to view the food courts based on APPROVED OR REQUESTED STATUS, You can apply by selecting the filter on top right corner.
+
     3) Type ahead search with 1s delay.( If no user action for 1 second, then a search will be started inorder to reduce the load on the server)
 
         Type ahead search, the search can be on food court name or expiration date or street_name. This is a substring search
@@ -94,3 +103,17 @@ Features:
                 body:{
                     'expirationdate':<ISO-FORMAT-DATE>
                 }
+        5:) To register a webhook.
+
+                http://localhost:8080/registerWebhook
+
+                Method:'POST'
+
+                body:{
+	                "callbackURL":<Callback URL of you system. Make sure its hosted or its a public api that can be accessed from the location you re running server>,
+	                "emailId":<If provided will send an email if there are any food trucks avilable>,
+	                "name":<name of the webhook>,
+	                "hooktype":"expiration" <Remains constant.>
+                }
+        
+    Once you register a webhook, on any food truck expiration you will be notified both via EMAIL(if provided) and to the CALLBACK URL.

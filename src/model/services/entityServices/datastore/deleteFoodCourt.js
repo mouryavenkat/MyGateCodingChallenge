@@ -4,14 +4,14 @@ const logger = require('../../../../config/logger').getLogger();
 const deleteFoodCourt = async (req, res) => {
     try {
         console.log(req.params)
-        logger.info(`Deleting the restauant named ${req.params['foodCourtName']}`);
+        logger.info(`Deleting the restauant named ${req.params['foodCourtId']}`);
         const modelForFoodCourt = FoodCourtModel.createModelForDataStore();
-        console.log({ applicant: req.params['foodCourtName'] })
-        const response = await deleteOperation.DeleteDocumentsByQuery(modelForFoodCourt, { applicant: req.params['foodCourtName'] });
+        console.log({ objectid: req.params['foodCourtId'] })
+        const response = await deleteOperation.DeleteDocumentsByQuery(modelForFoodCourt, { objectid: req.params['foodCourtId'] });
         if(response['n']==0){
-            return res.status(404).json({code:404,message:`The restaurant ${req.params['foodCourtName']} isn't available to be deleted`})
+            return res.status(404).json({code:404,message:`The restaurant ${req.params['foodCourtId']} isn't available to be deleted`})
         }
-        logger.debug(`Response received by deleting ${req.params.foodCourtName} is ${JSON.stringify(response)}`);
+        logger.debug(`Response received by deleting ${req.params.foodCourtId} is ${JSON.stringify(response)}`);
         return res.json(response);
     }
     catch (ex) {
