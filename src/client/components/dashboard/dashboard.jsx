@@ -17,7 +17,7 @@ class DashboardComponent extends React.Component {
     }
   }
   changeState = (stateName, stateValue) => {
-    console.log(stateName,stateValue)
+    console.log(stateName, stateValue)
     this.setState({ [stateName]: stateValue })
   }
   sideBarMenu = () => {
@@ -117,7 +117,8 @@ class DashboardComponent extends React.Component {
                   items={[
                     { id: 'All', text: 'All' },
                     { id: 'APPROVED', text: 'APPROVED' },
-                    { id: 'REQUESTED', text: 'REQUESTED' }
+                    { id: 'REQUESTED', text: 'REQUESTED' },
+                    { id: 'EXPIRED', text: 'EXPIRED' }
                   ]}
                   itemToString={(item) => { if (item && item.text) { return item.text.toString() } }}
                   placeholder="Filter By status"
