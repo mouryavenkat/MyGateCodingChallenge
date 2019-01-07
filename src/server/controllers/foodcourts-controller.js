@@ -14,7 +14,7 @@ module.exports = (app) => {
         .post(createDatastore.createDataset);
     app.route('/fetchFoodCourts')
         .get(getDataset.getDataset);
-    app.route('/deleteFoodCourt/:foodCourtName')
+    app.route('/deleteFoodCourt/:foodCourtId')
         .delete(deleteFoodCourt.deleteFoodCourt)
     app.route('/getFoodCourtsByLocation')
         .get(getFoodCOurtByLocation.getBestTruckByLocation)
