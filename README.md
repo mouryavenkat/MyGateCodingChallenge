@@ -31,7 +31,7 @@ Step-2 : Now that we have mongoDB up and running, We need to connect server to m
 
         ---> If everything went well and mongo connection is established, the server will start on 8080 port
 
-        ---> To pull ll the existing api data into datamodel, please access the following API
+        ---> To pull all the existing api data into datamodel, please access the following API
 
                 url: http://localhost:8080/syncdata
 
@@ -53,7 +53,7 @@ Features:
     1:)You can view all the Food Courts by default . 
 
     2:)If you want to view the food courts based on APPROVED OR REQUESTED STATUS, You can apply by selecting the filter on top right corner.
-    
+
     3) Type ahead search with 1s delay.( If no user action for 1 second, then a search will be started inorder to reduce the load on the server)
 
         Type ahead search, the search can be on food court name or expiration date or street_name. This is a substring search
