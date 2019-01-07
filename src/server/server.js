@@ -6,7 +6,13 @@ const passport = require('passport');
 const cookieSession = require('cookie-session');
 const app = express();
 const CONTENT_SERVER_PORT = process.env.ADAPTER_TEMPLATE_ENGINE_PORT ? process.env.ADAPTER_TEMPLATE_ENGINE_PORT : 8080
+const autoExpiry = require('./autoExpiry');
 const cors = require('cors');
+
+const CronJob = require('cron').CronJob;
+new CronJob('0 0 0 * * *', async () => {
+    autoExpiry.autoExpiry()
+})
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true

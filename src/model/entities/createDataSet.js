@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const datastoreSchema = new Schema({
+    _id: { type: String, required: true, strict: true },
     address: { type: String, required: true, strict: true },
     applicant: { type: String, required: true, strict: true },
     approved: { type: String, strict: true },
