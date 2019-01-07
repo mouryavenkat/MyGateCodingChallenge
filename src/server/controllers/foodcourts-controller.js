@@ -5,10 +5,12 @@ const getFoodCOurtByLocation = require('../../model/services/entityServices/data
 const createRequest = require('../../model/services/entityServices/datastore/createRequest');
 const updateFoodTruck = require('../../model/services/entityServices/datastore/updateFoodTruck')
 const approveRequest = require('../../model/services/entityServices/datastore/approveRequest')
+const registerWebhook = require('../../model/services/entityServices/datastore/createWebhook');
+const autoExpire = require('../autoExpiry')
 module.exports = (app) => {
     app.route('/createRequest')
         .post(createRequest.createRequest)
-    app.route('/datastore')
+    app.route('/syncdata')
         .post(createDatastore.createDataset);
     app.route('/fetchFoodCourts')
         .get(getDataset.getDataset);
@@ -20,4 +22,8 @@ module.exports = (app) => {
         .put(updateFoodTruck.upsertFoodTruck)
     app.route('/approveRequest')
         .post(approveRequest.approveRequest)
+    app.route('/registerWebhook')
+        .post(registerWebhook.registerWebhook)
+    app.route('/autoexpire')
+        .post(autoExpire.autoExpiry)
 }

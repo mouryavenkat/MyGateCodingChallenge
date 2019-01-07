@@ -2,6 +2,11 @@
 This is for mygate coding challenge
 
 
+Project Clone:
+    
+        git clone git@github.com:mouryavenkat/MyGateCodingChallenge.git
+
+        Do 'npm install' 
 
 Step-1 : You need to install mongoDB. Best way is skip installation process is to use  docker image of mongoDB. Run the following command.
 
@@ -37,13 +42,14 @@ Step-3 : Now that we started our server, the only step is to start the client. T
 
 
 Features: 
+
     1:)You can view all the Food Courts by default . 
     2:)If you want to view the food courts based on APPROVED OR REQUESTED STATUS, You can apply by selecting the filter on top right corner.
     3) Type ahead search with 1s delay.( If no user action for 1 second, then a search will be started inorder to reduce the load on the server)
 
         Type ahead search, the search can be on food court name or expiration date or street_name. This is a substring search
-        
-    4) You can add a new food court from the UI.
+
+    4) You can request for starting  a new food court from the UI.
 
     API SUPPORT:
     ------------
@@ -68,5 +74,23 @@ Features:
                 If foodCourt is present, then it will return {n:1,ok:1}.
 
                 If specified food court is not present or is already deleted, it will return back a 404 http status code response.
+            
+            Method:'DELETE'
 
         3:) To upsert a specific food court.
+
+                http://localhost:8080/updateFoodTruck 
+
+                Method:'PUT',
+
+                Body: The data with which you want to update the foodtruck. 
+
+        4:) To Approve a foodtruck request.
+
+                http://localhost:8080/approveRequest?requestId=<Object_Id_Of_FoodTruck>
+
+                Method:'POST'
+
+                body:{
+                    'expirationdate':<ISO-FORMAT-DATE>
+                }
