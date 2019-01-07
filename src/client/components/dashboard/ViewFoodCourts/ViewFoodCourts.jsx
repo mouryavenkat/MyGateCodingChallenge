@@ -101,6 +101,7 @@ class ViewFoodCourts extends React.Component {
 
     }
     filterItemsByStatus = (status) => {
+        console.log(status)
         this.setState({
             'setOfFoodCourts': this.state.setOfFoodCourtsClone.filter((item) => {
                 if (item.status === status) {
