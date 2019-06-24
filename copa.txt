@@ -1,0 +1,7 @@
+COPA -
+profitability analysis 
+The user defined value fields are either filled from 
+1.SD pricing condition VPRS or
+2.From product costing cost estimates or
+3.Costing sheets or
+4.User exits
